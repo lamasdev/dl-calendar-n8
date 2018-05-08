@@ -4,13 +4,15 @@ import { TransitionGroup } from 'react-transition-group';
 import CalendarForm from '../components/CalendarForm';
 import Calendar from '../components/Calendar';
 import { buildCalendar } from '../helpers/helpers';
+import isoCountries from '../data/iso-country';
 
 const defaultState = {
     Component: CalendarForm,
     startDate: new Date().toISOString().substring(0,10),
     numberDays: 1,
     countryCode: '',
-    calendarArray: []
+    calendarArray: [],
+    error: false
 }
 
 export default class CalendarManager extends Component {
@@ -29,19 +31,24 @@ export default class CalendarManager extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: typeof value === 'string' ? value.toUpperCase() : value
     });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const {startDate, numberDays} = this.state;
-    const calendarArray = buildCalendar(startDate, numberDays);
-    this.setState({Component: Calendar, calendarArray});
+    const {startDate, numberDays, countryCode} = this.state;
+    const validCountryCode = isoCountries.find(country => country.ccode === countryCode);
+    if(validCountryCode){
+      const calendarArray = buildCalendar(startDate, numberDays);
+      this.setState({Component: Calendar, calendarArray});
+    }else{
+      this.setState({error: true});
+    }
   }
 
   render() {
-    const {startDate, numberDays, countryCode, calendarArray, Component} = this.state;
+    const {startDate, numberDays, countryCode, error, calendarArray, Component} = this.state;
     return (
       <div className="container">
         <TransitionGroup component={null}>
@@ -49,6 +56,7 @@ export default class CalendarManager extends Component {
               startDate = {startDate}
               numberDays = {numberDays}
               countryCode = {countryCode}
+              error = {error}
               calendarArray = {calendarArray}
               handleChange = {this.handleChange}
               handleSubmit = {this.handleSubmit}
