@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 
 import CalendarForm from '../components/CalendarForm';
-import Calendar from '../components/Calendar';
+import CalendarGrid from './CalendarGrid';
 import { buildCalendar } from '../helpers/helpers';
 import isoCountries from '../data/iso-country';
 
@@ -39,9 +39,9 @@ export default class CalendarManager extends Component {
     event.preventDefault();
     const {startDate, numberDays, countryCode} = this.state;
     const validCountryCode = isoCountries.find(country => country.ccode === countryCode);
-    if(validCountryCode){
+    if(validCountryCode && startDate !== "" && numberDays > 0){
       const calendarArray = buildCalendar(startDate, numberDays);
-      this.setState({Component: Calendar, calendarArray});
+      this.setState({Component: CalendarGrid, calendarArray});
     }else{
       this.setState({error: true});
     }
@@ -60,6 +60,7 @@ export default class CalendarManager extends Component {
               calendarArray = {calendarArray}
               handleChange = {this.handleChange}
               handleSubmit = {this.handleSubmit}
+              handleReset = {this.handleReset}
             />
         </TransitionGroup>      
       </div>
