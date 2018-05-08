@@ -15,7 +15,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -b master -d build"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -27,5 +27,5 @@
     "eslint-plugin-react": "^7.7.0",
     "gh-pages": "^1.1.0"
   },
-  "homepage": "http://lamasdev.github.io/dl-calendar-n8"
+  "homepage": "https://lamasdev.github.io/dl-calendar-n8"
 }
